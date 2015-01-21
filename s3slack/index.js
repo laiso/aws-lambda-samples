@@ -10,10 +10,12 @@ exports.handler = function(event, context) {
             channel: "#s3",
             text: "Put: "+filename
         })
-        .on('data', function (data) {
-            console.log('decoded chunk: ' + data);
+        .on('response', function (response) {
+          response.on('data', function(data) {
+            context.done(null, data);
+          });
         })
         .on('error', function (err) {
-            console.log(err);
+            cotext.done(err, 'Failed post the chat');
         });
 };
